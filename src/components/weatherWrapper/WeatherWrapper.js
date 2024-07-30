@@ -1,9 +1,11 @@
 import { useState } from "react"
-import "./WeatherWrapper.css"
+
 import WeatherToday from "./weatherToday/WeatherToday"
 
+import "./WeatherWrapper.css"
 
-const WeatherWrapper = (params) => {
+const WeatherWrapper = () => {
+    const weatherApiKey = process.env.REACT_APP_API_KEY
     // Searched city
     const [inputCity, setInputCity] = useState("")
     // Coordiantes of the searched city
@@ -14,10 +16,6 @@ const WeatherWrapper = (params) => {
     const [loading, setLoading] = useState(false)
     // Error msg when there searched city doesn't exist
     const [errorText, setErrorText] = useState(false)
-
-    // DELETE THIS
-    const apinumber = ""
-    // DELETE THIS
 
     // Get the location lat and long
     const getLocationParams = async (event) => {
@@ -45,12 +43,11 @@ const WeatherWrapper = (params) => {
         }
 
         setLoading(true)
-        await fetch(`https://api.openweathermap.org/data/2.5/forecast?units=metric&lat=${coordinates.lat}&lon=${coordinates.long}&appid=${apinumber}`)
+        await fetch(`https://api.openweathermap.org/data/2.5/forecast?units=metric&lat=${coordinates.lat}&lon=${coordinates.long}&appid=${weatherApiKey}`)
             .then(response => response.json())
             .then(result => setWeatherInfo(result.list.slice(0, 5)))
             .finally(setLoading(false))
             .catch(error => console.error('Error fetching data:', error));
-
     }
 
     return <div className="weather-outer-wrapper">

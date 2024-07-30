@@ -1,0 +1,53 @@
+.weather-today-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+
+  width: 300px;
+  height: 300px;
+
+  border-radius: 20px;
+  background-color: rgb(88, 118, 118);
+  text-align: center;
+
+  color: white;
+}
+
+.weather-today-inner-temperature-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+.weather-today-temp-wrapper {
+  margin: 20px 0px;
+}
+
+.weather-today-date {
+  margin-bottom: 0px;
+}
+
+.weather-today-description {
+  margin: 5px;
+}
+
+.weather-today-temp-wrapper > * {
+  margin: 0px;
+}
+
+.weather-today-img {
+  width: 100px;
+  height: 100px;
+}
+
+.weather-today-wind-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.weather-today-icon {
+  width: 30px;
+  height: 30px;
+}
