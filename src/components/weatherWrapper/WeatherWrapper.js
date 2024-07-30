@@ -78,7 +78,7 @@ const WeatherWrapper = () => {
         {!loading &&
             <div className="input-wrapper">
                 <input placeholder="Enter your city's name" onChange={(e) => { getLocationParams(e) }} />
-                <button onClick={() => { submitCityInfo("C") }}>Submit</button>
+                <button onClick={() => { submitCityInfo("C") }} style={{ cursor: "pointer" }}>Submit</button>
                 {errorText && <div><p>Please provide a valid city!</p></div>}
             </div>
         }
