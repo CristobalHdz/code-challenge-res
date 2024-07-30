@@ -1,8 +1,8 @@
 .home-weather-wrapper {
   display: flex;
   justify-content: center;
-  align-items: center;
+  margin-top: 50px;
 
   width: 100%;
-  height: calc(100vh - 100px);
+  /* height: calc(100vh - 100px); */
 }

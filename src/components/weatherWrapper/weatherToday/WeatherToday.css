@@ -4,23 +4,25 @@
   align-items: center;
   justify-content: start;
 
-  width: 300px;
-  height: 300px;
+  max-width: 300px;
+  width: 100%;
 
   border-radius: 20px;
-  background-color: rgb(88, 118, 118);
+  background-color: var(--bg-color-100);
   text-align: center;
 
-  color: white;
+  color: var(--font-color-100);
 }
 
 .weather-today-inner-temperature-wrapper {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+
+  align-items: center;
 }
 
 .weather-today-temp-wrapper {
-  margin: 20px 0px;
+  margin: 0px;
 }
 
 .weather-today-date {
@@ -50,4 +52,20 @@
 .weather-today-icon {
   width: 30px;
   height: 30px;
+}
+
+@media (min-width: 1475px) {
+  .weather-today-wrapper {
+    width: 30%;
+    min-width: 300px;
+    height: 300px;
+  }
+
+  .weather-today-inner-temperature-wrapper {
+    flex-direction: row;
+  }
+
+  .weather-today-temp-wrapper {
+    margin: 20px 0px;
+  }
 }

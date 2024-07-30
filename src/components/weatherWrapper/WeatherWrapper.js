@@ -1,6 +1,8 @@
 import { useState } from "react"
 
 import WeatherToday from "./weatherToday/WeatherToday"
+import WeatherFuture from "./weatherFuture/WeatherFuture"
+import { capitalizeFirst } from "../../utils/Helpers"
 
 import "./WeatherWrapper.css"
 
@@ -45,9 +47,15 @@ const WeatherWrapper = () => {
         setLoading(true)
         await fetch(`https://api.openweathermap.org/data/2.5/forecast?units=metric&lat=${coordinates.lat}&lon=${coordinates.long}&appid=${weatherApiKey}`)
             .then(response => response.json())
-            .then(result => setWeatherInfo(result.list.slice(0, 5)))
+            .then(result => setWeatherInfo(result.list.filter((item, index) => {
+                return index === 0 || index % 7 === 0
+            })))
             .finally(setLoading(false))
             .catch(error => console.error('Error fetching data:', error));
+    }
+
+    const cityWithoutSymbols = (cityName) => {
+        return cityName.replace(/-/g, ' ')
     }
 
     return <div className="weather-outer-wrapper">
@@ -58,9 +66,20 @@ const WeatherWrapper = () => {
                 <button onClick={() => { submitCityInfo() }}>Submit</button>
                 {errorText && <div><p>Please provide a valid city!</p></div>}
             </div>
-
         }
-        {weatherInfo.length > 0 && <WeatherToday currentWeather={weatherInfo[0]} />}
+        {weatherInfo.length > 0 && <h1>{cityWithoutSymbols(capitalizeFirst(coordinates.name))}</h1>}
+
+        {weatherInfo.length > 0 && <div className="weather-information-inner-wrapper">
+            {/* Today's Weather */}
+            <WeatherToday currentWeather={weatherInfo[0]} />
+
+            {/* Future Weather */}
+            <div className="weather-future-information">{weatherInfo.slice(1).map((info, index) => {
+                return <WeatherFuture key={index} futureWeather={info} />
+            })}
+            </div>
+        </div>}
+
     </div>
 }
 export default WeatherWrapper
