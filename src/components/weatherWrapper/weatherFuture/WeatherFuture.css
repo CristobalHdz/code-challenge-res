@@ -51,4 +51,9 @@
     border-radius: 20px;
     text-align: center;
   }
+
+  .future-weather-date {
+    margin-bottom: 0px;
+    height: 42px;
+  }
 }

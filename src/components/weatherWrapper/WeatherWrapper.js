@@ -18,6 +18,8 @@ const WeatherWrapper = () => {
     const [loading, setLoading] = useState(false)
     // Error msg when there searched city doesn't exist
     const [errorText, setErrorText] = useState(false)
+    // Metric Choose metric or imperial
+    const [metricStatus, setMetricStatus] = useState(false)
 
     // Get the location lat and long
     const getLocationParams = async (event) => {
@@ -39,13 +41,26 @@ const WeatherWrapper = () => {
     }
 
     // Get the weather based on the city's coordinates
-    const submitCityInfo = async () => {
+    const submitCityInfo = async (info) => {
+        let unitStatus
+        // Fetch data ONLY when the metric state changes
+        if ((info === "C" && metricStatus) || (info === "F" && !metricStatus)) {
+            return
+        } else if (info === "C") {
+            setMetricStatus(metricStatus)
+            unitStatus = "metric"
+        } else if (info === "F") {
+            setMetricStatus(!metricStatus)
+            unitStatus = "imperial"
+        }
+
         if (coordinates.name.length === 0) {
             return setErrorText(true)
         }
 
+        setMetricStatus(!metricStatus)
         setLoading(true)
-        await fetch(`https://api.openweathermap.org/data/2.5/forecast?units=metric&lat=${coordinates.lat}&lon=${coordinates.long}&appid=${weatherApiKey}`)
+        await fetch(`https://api.openweathermap.org/data/2.5/forecast?units=${unitStatus}&lat=${coordinates.lat}&lon=${coordinates.long}&appid=${weatherApiKey}`)
             .then(response => response.json())
             .then(result => setWeatherInfo(result.list.filter((item, index) => {
                 return index === 0 || index % 7 === 0
@@ -63,19 +78,27 @@ const WeatherWrapper = () => {
         {!loading &&
             <div className="input-wrapper">
                 <input placeholder="Enter your city's name" onChange={(e) => { getLocationParams(e) }} />
-                <button onClick={() => { submitCityInfo() }}>Submit</button>
+                <button onClick={() => { submitCityInfo("C") }}>Submit</button>
                 {errorText && <div><p>Please provide a valid city!</p></div>}
+            </div>
+        }
+        {!loading && weatherInfo.length > 0 &&
+            <div className="unit-button-wrapper">
+                <div className="upper-button-border"></div>
+                <button onClick={() => { submitCityInfo("C") }} className={`unit-button unit-button-cel ${metricStatus ? "active-cel-btn" : ""}`}>Celsius</button>
+                <button onClick={() => { submitCityInfo("F") }} className={`unit-button unit-button-fah ${!metricStatus ? "active-fah-btn" : ""}`}>Fahrenheit</button>
+                <div className="lower-button-border"></div>
             </div>
         }
         {weatherInfo.length > 0 && <h1>{cityWithoutSymbols(capitalizeFirst(coordinates.name))}</h1>}
 
         {weatherInfo.length > 0 && <div className="weather-information-inner-wrapper">
             {/* Today's Weather */}
-            <WeatherToday currentWeather={weatherInfo[0]} />
+            <WeatherToday currentWeather={weatherInfo[0]} unitsStatus={metricStatus} />
 
             {/* Future Weather */}
             <div className="weather-future-information">{weatherInfo.slice(1).map((info, index) => {
-                return <WeatherFuture key={index} futureWeather={info} />
+                return <WeatherFuture key={index} futureWeather={info} unitsStatus={metricStatus} />
             })}
             </div>
         </div>}

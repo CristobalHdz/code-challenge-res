@@ -4,9 +4,12 @@ import WindImg from "../../../assets/windImg.svg"
 
 import "./WeatherToday.css"
 
-const WeatherToday = ({ currentWeather }) => {
+const WeatherToday = ({ currentWeather, unitsStatus }) => {
     const currentWeatherCondition = currentWeather.weather[0]
     const weatherTemperature = currentWeather.main
+
+    let currentUnit = unitsStatus ? "C" : "F"
+    let currentUnitWind = unitsStatus ? "m/sec" : "mi/hr"
 
     return <div className="weather-today-wrapper">
         <div>
@@ -20,15 +23,15 @@ const WeatherToday = ({ currentWeather }) => {
                     className="weather-today-img"
                 />
                 <div className="weather-today-temp-wrapper">
-                    <h2>{Math.ceil(weatherTemperature.temp)} C</h2>
-                    <h4 className="weather-today-description">{`Feels like ${Math.ceil(weatherTemperature.feels_like)} C`}</h4>
-                    <h4>{`Min: ${Math.floor(weatherTemperature.temp_min)} C - Max: ${Math.ceil(weatherTemperature.temp_max)} C `}</h4>
+                    <h2>{Math.ceil(weatherTemperature.temp)} {currentUnit}</h2>
+                    <h4 className="weather-today-description">{`Feels like ${Math.ceil(weatherTemperature.feels_like)} ${currentUnit}`}</h4>
+                    <h4>{`Min: ${Math.floor(weatherTemperature.temp_min)} ${currentUnit} - Max: ${Math.ceil(weatherTemperature.temp_max)} ${currentUnit} `}</h4>
                 </div>
             </div>
 
             <div className="weather-today-wind-wrapper">
                 <img src={WindImg} alt="Wind icon" className="weather-today-icon" />
-                <h3>{`Wind Speed: ${currentWeather.wind.speed}`}</h3>
+                <h3>{`Wind Speed: ${currentWeather.wind.speed} ${currentUnitWind}`}</h3>
             </div>
 
         </div>

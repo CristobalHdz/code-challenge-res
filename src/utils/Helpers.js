@@ -10,7 +10,7 @@ export const unixToDate = (unixTime) => {
     const dayNumber = time.getDate()
     const month = months[time.getMonth()]
 
-    return `${dayOfWeek} ${dayNumber} ${month}`
+    return `${dayOfWeek} ${month} ${dayNumber}`
 }
 
 // Returns the string with its first letter as Uppercase
